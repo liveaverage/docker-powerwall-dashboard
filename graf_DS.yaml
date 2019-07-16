@@ -1,0 +1,24 @@
+# config file version
+apiVersion: 1
+
+datasources:
+- orgId: 1
+  name: DS_POWERDATA
+  type: influxdb
+  typeLogoUrl: ''
+  access: proxy
+  url: http://localhost:8086
+  password: ''
+  user: ''
+  database: PowerwallData
+  basicAuth: false
+  basicAuthUser: ''
+  basicAuthPassword: ''
+  withCredentials: false
+  isDefault: true
+  jsonData:
+    httpMode: GET
+    keepCookies: []
+  secureJsonFields: {}
+  version: 3
+  readOnly: false
