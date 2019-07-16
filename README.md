@@ -1,6 +1,6 @@
 # Overview
 
-This is based on the work of @rhodesman and his teslaPowerDash repo, but hopefully enables easier ramp up to start obtaining Powerwall 2 trend data.
+This is based on the work of [@rhodesman | https://github.com/rhodesman] and his [teslaPowerDash | https://github.com/rhodesman/teslaPowerDash] repo, but hopefully enables easier ramp up to start obtaining and trending Powerwall 2 API data.
 
 # Usage
 
