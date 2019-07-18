@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_DS_POWERDATA",
-      "label": "DS_POWERDATA",
+      "name": "DS_POWERDATA",
+      "label": "PowerData",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.2.5"
+      "version": "6.2.2"
     },
     {
       "type": "panel",
@@ -54,7 +54,6 @@
       }
     ]
   },
-  "description": "An interactive view of your energy consumption, production, and environment.",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
@@ -66,7 +65,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "fill": 1,
       "gridPos": {
         "h": 8,
@@ -253,7 +252,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "fill": 1,
       "gridPos": {
         "h": 8,
@@ -398,7 +397,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -545,7 +544,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#3274D9"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "format": "watth",
       "gauge": {
         "maxValue": 100,
@@ -660,8 +659,8 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
-      "format": "farenheit",
+      "datasource": "DS_POWERDATA",
+      "format": "celsius",
       "gauge": {
         "maxValue": 100,
         "minValue": 0,
@@ -730,8 +729,6 @@
           "measurement": "weather",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT ((mean(\"main_temp\") * 1.8) + 32 ) FROM \"weather\"",
-          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -748,13 +745,7 @@
               }
             ]
           ],
-          "tags": [
-            {
-              "key": "url",
-              "operator": "=",
-              "value": "*"
-            }
-          ]
+          "tags": []
         }
       ],
       "thresholds": "",
@@ -781,7 +772,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -851,8 +842,6 @@
           "measurement": "weather",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"clouds_all\") FROM \"weather\" GROUP BY time(1h) fill(none)",
-          "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -902,7 +891,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#FFEE52"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "format": "watth",
       "gauge": {
         "maxValue": 60000,
@@ -1023,7 +1012,7 @@
         "label": "Others",
         "threshold": 0
       },
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "fontSize": "80%",
       "format": "watth",
       "gridPos": {
@@ -1216,7 +1205,7 @@
         "label": "Others",
         "threshold": 0
       },
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "decimals": null,
       "fontSize": "70%",
       "format": "watth",
@@ -1405,7 +1394,7 @@
         "#56A64B",
         "#56A64B"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "format": "watth",
       "gauge": {
         "maxValue": 100,
@@ -1528,7 +1517,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "fill": 1,
       "gridPos": {
         "h": 8,
@@ -1673,7 +1662,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "decimals": 2,
       "format": "currencyUSD",
       "gauge": {
@@ -1761,7 +1750,7 @@
               },
               {
                 "params": [
-                  " / 1000 * 0.0993"
+                  " / 1000 * 0.532386"
                 ],
                 "type": "math"
               }
@@ -1797,7 +1786,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "fill": 1,
       "gridPos": {
         "h": 8,
@@ -2099,7 +2088,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "format": "watth",
       "gauge": {
         "maxValue": 100,
@@ -2220,7 +2209,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "format": "watth",
       "gauge": {
         "maxValue": 100,
@@ -2347,7 +2336,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_DS_POWERDATA}",
+      "datasource": "DS_POWERDATA",
       "format": "watth",
       "gauge": {
         "maxValue": 100,
@@ -2466,7 +2455,6 @@
       "valueName": "total"
     }
   ],
-  "refresh": false,
   "schemaVersion": 18,
   "style": "dark",
   "tags": [],
@@ -2474,8 +2462,8 @@
     "list": []
   },
   "time": {
-    "from": "2019-07-10T16:00:00.000Z",
-    "to": "2019-07-24T15:59:59.998Z"
+    "from": "now/M",
+    "to": "now/M"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -2502,8 +2490,8 @@
       "30d"
     ]
   },
-  "timezone": "browser",
-  "title": "Powerwall History",
-  "uid": "Wvq3l7HWz",
-  "version": 3
+  "timezone": "",
+  "title": "Historical Data",
+  "uid": "lp3v3S4Zz",
+  "version": 15
 }

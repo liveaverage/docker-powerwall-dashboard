@@ -36,7 +36,6 @@ ADD graf_DS.yaml /etc/grafana/provisioning/datasources/graf_DS.yaml
 ADD graf_DA.yaml /etc/grafana/provisioning/dashboards/graf_DA.yaml
 
 RUN mkdir -p /var/lib/grafana/dashboards && chown grafana:grafana /var/lib/grafana/dashboards
-ADD graf_dash.json /var/lib/grafana/dashboards/graf_dash.json
 
 EXPOSE 3000
 
@@ -44,5 +43,6 @@ ADD run.sh /opt/run.sh
 RUN chmod -v +x /opt/run.sh
 RUN export $(grep -v "#" /etc/sysconfig/grafana-server | cut -d= -f1)
 
+ENV POWERWALL_LOCATION="lat=36.2452052&lon=-113.7292593"
 
 CMD ["/opt/run.sh"]

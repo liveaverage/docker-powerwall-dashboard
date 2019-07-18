@@ -19,12 +19,16 @@ podman pull liveaverage/powerwall-dashboard
 ```
 export POWERWALL_IP=192.168.1.92
 export LOCAL_INFLUXDB_PATH=/tmp/influxdata
+export LOCAL_GRAFANA_PATH=/tmp/grafana
 
-podman run --add-host teslapw:${POWERWALL_IP} -p 3000:3000 -v ${LOCAL_INFLUXDB_PATH}:/var/lib/influxdb:z liveaverage/powerwall-dashboard
+podman run --add-host teslapw:${POWERWALL_IP} -p 3000:3000 \
+	-v ${LOCAL_INFLUXDB_PATH}:/var/lib/influxdb:z \
+	-v ${LOCAL_GRAFANA_PATH}:/var/lib/grafana:z \
+	liveaverage/powerwall-dashboard
 
 ## Optional if you're still using docker:
-## docker run --add-host teslapw:${POWERWALL_IP} -p 3000:3000 -v ${LOCAL_INFLUXDB_PATH}:/var/lib/influxdb:z liveaverage/powerwall-dashboard
+## docker run --add-host teslapw:${POWERWALL_IP} -p 3000:3000 -v ${LOCAL_INFLUXDB_PATH}:/var/lib/influxdb:z -v ${LOCAL_GRAFANA_PATH}:/var/lib/grafana:z liveaverage/powerwall-dashboard
  
 ```
 - Access the Grafana dashboard from your container host IP, which may require firewall exceptions for TCP3000: http://localhost:3000
-  - Default credentials are "admin" for username/password; note that you'll need to map select grafana volumes to persist user details
+  - Default credentials are "admin" for username/password

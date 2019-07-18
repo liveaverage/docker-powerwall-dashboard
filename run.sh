@@ -20,6 +20,10 @@ set -a; . /etc/sysconfig/grafana-server; set +a
 
 cd /usr/share/grafana
 
+mkdir -p /var/lib/grafana/dashboards || true
+chown -R grafana:grafana /var/lib/grafana || true
+curl ${GRAFANA_DASHBOARD_URL} > /var/lib/grafana/dashboards/grafana_powerwall.json
+
 /usr/sbin/grafana-server \
 	--config=${CONF_FILE}                                   \
 	--pidfile=${PID_FILE_DIR}/grafana-server.pid            \
