@@ -2,6 +2,10 @@
 
 This is based on the work of [@rhodesman](https://github.com/rhodesman) and his [teslaPowerDash](https://github.com/rhodesman/teslaPowerDash) repo, but hopefully enables easier ramp up to start obtaining and trending Powerwall 2 API data.
 
+# Preview
+
+![Grafana Dashboard Preview](https://i.imgur.com/GtP725k.png)
+
 # Usage
 
 If you're still using docker rather than podman, simply replace all `podman` calls with `docker`.
