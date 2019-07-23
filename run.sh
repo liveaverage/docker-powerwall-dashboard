@@ -20,9 +20,11 @@ set -a; . /etc/sysconfig/grafana-server; set +a
 
 cd /usr/share/grafana
 
-mkdir -p /var/lib/grafana/dashboards || true
-chown -R grafana:grafana /var/lib/grafana || true
+# Preconfigure grafana with required plugins and dashboards
+mkdir -p /var/lib/grafana/dashboards
+grafana-cli plugins install grafana-piechart-panel
 curl ${GRAFANA_DASHBOARD_URL} > /var/lib/grafana/dashboards/grafana_powerwall.json
+chown -R grafana:grafana /var/lib/grafana
 
 /usr/sbin/grafana-server \
 	--config=${CONF_FILE}                                   \

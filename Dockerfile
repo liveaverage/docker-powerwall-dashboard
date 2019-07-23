@@ -17,11 +17,6 @@ RUN yum -y --setopt=tsflags=nodocs install \
 	urw-fonts \
 	grafana
 
-
-RUN grafana-cli plugins install grafana-piechart-panel && chown -R grafana:grafana /var/lib/grafana/plugins/
-
-
-
 # Defaults for InfluxDB
 ENV INFLUXDB_HTTP_ENABLED=true \
     INFLUXDB_HTTP_BIND_ADDRESS="127.0.0.1:8086" \
