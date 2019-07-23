@@ -4,7 +4,7 @@ This is based on the work of [@rhodesman](https://github.com/rhodesman) and his 
 
 # Preview
 
-![Grafana Dashboard Preview](https://i.imgur.com/GtP725k.png)
+<a href="https://i.imgur.com/GtP725k" ><img src="https://i.imgur.com/GtP725k.png" alt="Grafana Dashboard Preview" width="50%"/></a>
 
 # Usage
 
