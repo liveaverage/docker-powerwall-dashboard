@@ -1,7 +1,7 @@
 FROM centos:7
 MAINTAINER JR Morgan <jr@shifti.us>
 
-LABEL Vendor="CentOS" \
+LABEL Vendor="CentOS7" \
       License=GPLv2 \
       Version=1.0
 
