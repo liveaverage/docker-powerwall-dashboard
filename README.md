@@ -36,3 +36,4 @@ podman run --add-host teslapw:${POWERWALL_IP} -p 3000:3000 \
 ```
 - Access the Grafana dashboard from your container host IP, which may require firewall exceptions for TCP3000: http://localhost:3000
   - Default credentials are "admin" for username/password
+
