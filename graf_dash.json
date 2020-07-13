@@ -2474,8 +2474,8 @@
     "list": []
   },
   "time": {
-    "from": "2019-07-10T16:00:00.000Z",
-    "to": "2019-07-24T15:59:59.998Z"
+    "from": "now-12h",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
