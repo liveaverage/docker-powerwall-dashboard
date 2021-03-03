@@ -21,12 +21,14 @@ podman pull liveaverage/powerwall-dashboard
 
 ```
 export POWERWALL_IP=192.168.1.92
+export POWERWALL_PASS=002C
 export LOCAL_INFLUXDB_PATH=/tmp/influxdata
 export LOCAL_GRAFANA_PATH=/tmp/grafana
 export GRAFANA_WEATHER_LOCATION="lat=36.2452052&lon=-80.7292593"
 export GRAFANA_DASHBOARD_URL="https://raw.githubusercontent.com/liveaverage/docker-powerwall-dashboard/master/graf_dash.json"
 
 podman run --add-host teslapw:${POWERWALL_IP} -p 3000:3000 \
+	-e "POWERWALL_PASS=${POWERWALL_PASS}" \
         -e "GRAFANA_DASHBOARD_URL=${GRAFANA_DASHBOARD_URL}" \
         -e "POWERWALL_LOCATION=${GRAFANA_WEATHER_LOCATION}" \
 	-v ${LOCAL_INFLUXDB_PATH}:/var/lib/influxdb:z \

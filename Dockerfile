@@ -6,6 +6,7 @@ LABEL Vendor="CentOS7" \
       Version=1.0
 
 ENV POWERWALL_HOST="teslapw"
+ENV POWERWALL_PASS="002D"
 ENV DATABASE="PowerwallData"
 
 ADD powerwall.repo /etc/yum.repos.d/powerwall.repo
@@ -15,6 +16,8 @@ RUN yum -y --setopt=tsflags=nodocs install \
 	telegraf \
 	initscripts \
 	urw-fonts \
+	cronie \
+        gettext \
 	grafana
 
 # Defaults for InfluxDB
@@ -29,6 +32,7 @@ ENV INFLUXDB_HTTP_ENABLED=true \
 ADD powerwall.conf /etc/telegraf/telegraf.d/powerwall.conf
 ADD graf_DS.yaml /etc/grafana/provisioning/datasources/graf_DS.yaml
 ADD graf_DA.yaml /etc/grafana/provisioning/dashboards/graf_DA.yaml
+ADD powerwallcookie.sh.template /etc/powerwallcookie.sh
 
 RUN mkdir -p /var/lib/grafana/dashboards && chown grafana:grafana /var/lib/grafana/dashboards
 

@@ -1,5 +1,23 @@
 #!/bin/bash
 
+# Create/validate cookie for Powerwall API Auth
+
+export POWERWALLIP="${POWERWALL_HOST}"         # This is your Powerwall IP or DNS Name -- we force a host entry to 'teslapw' so static is fine
+export PASSWORD="${POWERWALL_PASS}"            # Login to the Powerwall UI and Set this password - follow the on-screen instructions
+export USERNAME="customer"
+export EMAIL="Lt.Dan@bubbagump.com"            # Set this to whatever you want, it's not actually used in the login process; I suspect Tesla will collect this eventually
+export COOKIE="/var/tmp/PWcookie.txt"          # Feel free to change this location as you see fit.
+
+# Workaround to ensure a couple of vars are left untouched
+export COOKIE_AUTH='${COOKIE_AUTH}'
+export COOKIE_REC='${COOKIE_REC}'
+
+
+# Substitute all vars and dump to cron.hourly
+
+envsubst < /etc/powerwallcookie.sh > /etc/cron.hourly/powerwallcookie
+chmod a+x /etc/cron.hourly/powerwallcookie
+
 # Start influx
 /usr/bin/influxd -config /etc/influxdb/influxdb.conf &
 status=$?

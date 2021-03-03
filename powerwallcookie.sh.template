@@ -1,0 +1,84 @@
+#!/bin/bash
+
+
+#######################################################
+# Release Notes:
+#
+# Powerwall stats dumper for openhab
+# Created by Vince Loschiavo - 2021-02-21
+# As of Tesla Powerwall version 20.49.0, the powerwall gateway requires you authenticate for every stat.
+#
+# This script will login to the powerwall once per day to refresh the cookie, grab the JSON output from the powerwall and 
+#  send it to STDOUT for parsing by your tool of choice.
+#
+# Example URLs: 
+# /api/meters/aggregates
+# /api/system_status/soe
+# /api/system_status/grid_status
+# /api/sitemaster
+# /api/powerwalls
+# /api/status
+#
+#
+#######################################################
+# Subroutines
+#######################################################
+
+# Create a valid Cookie
+create_cookie () {
+	# Delete the old cookie if it exists
+	if [ -f $COOKIE ]; then 
+		rm -f $COOKIE
+	fi
+	
+	# Login and Create new cookie
+	curl -s -k -i -c $COOKIE -X POST -H "Content-Type: application/json" -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\", \"email\":\"$EMAIL\",\"force_sm_off\":false}" "https://$POWERWALLIP/api/login/Basic"
+
+	# If Login fails, then throw error and exit
+	if [ $? -eq 200 ]; then
+		echo "Login failed"
+		exit;
+	fi
+}
+
+
+# Check for a valid cookie
+valid_cookie () {
+
+	# if cookie doesnt exist, then login and create the cookie
+	if [ ! -f $COOKIE ]; then
+  		# Cookie not present. Creating cookie.
+		create_cookie
+	fi
+
+	# If the cookie is older than one day old, refresh the cookie
+	# Collect both times in seconds-since-the-epoch
+	ONE_DAY_AGO=$(date -d 'now - 1 days' +%s)
+	FILE_TIME=$(date -r "$COOKIE" +%s)
+
+	if [ "$FILE_TIME" -le "$ONE_DAY_AGO" ]; then
+		#The cookie is older than 1 days; get a new cookie
+		create_cookie
+	fi
+}
+
+
+
+#######################################################
+# Main
+#######################################################
+
+# Check for a valid cookie or login and create one
+valid_cookie
+
+# Update telegraf config based on existing variables
+COOKIE_AUTH=`grep UserRecord /var/tmp/PWcookie.txt | awk '{print($7)}'`
+COOKIE_REC=`grep AuthCookie /var/tmp/PWcookie.txt | awk '{print($7)}'`
+
+echo "COOKIE_AUTH=${COOKIE_AUTH}" > /etc/default/telegraf
+echo "COOKIE_REC=${COOKIE_REC}" >> /etc/default/telegraf
+
+# Send SIGHUP to telegraf for configuration reload: https://www.influxdata.com/blog/continuous-deployment-of-telegraf-configurations/
+kill -HUP `pidof telegraf` || true
+
+#Done
