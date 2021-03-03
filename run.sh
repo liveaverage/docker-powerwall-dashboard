@@ -11,7 +11,8 @@ export COOKIE="/var/tmp/PWcookie.txt"          # Feel free to change this locati
 # Workaround to ensure a couple of vars are left untouched
 export COOKIE_AUTH='${COOKIE_AUTH}'
 export COOKIE_REC='${COOKIE_REC}'
-
+export ONE_DAY_AGO='${ONE_DAY_AGO}'
+export FILE_TIME='${FILE_TIME}'
 
 # Substitute all vars and dump to cron.hourly
 
