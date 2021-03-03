@@ -18,6 +18,8 @@ export COOKIE_REC='${COOKIE_REC}'
 envsubst < /etc/powerwallcookie.sh > /etc/cron.hourly/powerwallcookie
 chmod a+x /etc/cron.hourly/powerwallcookie
 
+bash -xe /etc/cron.hourly/powerwallcookie
+
 # Start influx
 /usr/bin/influxd -config /etc/influxdb/influxdb.conf &
 status=$?
