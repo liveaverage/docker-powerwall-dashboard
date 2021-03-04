@@ -5,7 +5,9 @@
 # Release Notes:
 #
 # Powerwall stats dumper for openhab
-# Created by Vince Loschiavo - 2021-02-21
+# Created by Vince Loschiavo 	- 2021-02-21
+# Modified by JR Morgan 	- 2021-03-03
+#
 # As of Tesla Powerwall version 20.49.0, the powerwall gateway requires you authenticate for every stat.
 #
 # This script will login to the powerwall once per day to refresh the cookie, grab the JSON output from the powerwall and 
@@ -72,11 +74,15 @@ valid_cookie () {
 valid_cookie
 
 # Update telegraf config based on existing variables
-COOKIE_AUTH=`grep UserRecord /var/tmp/PWcookie.txt | awk '{print($7)}'`
-COOKIE_REC=`grep AuthCookie /var/tmp/PWcookie.txt | awk '{print($7)}'`
+COOKIE_REC=`grep UserRecord /var/tmp/PWcookie.txt | awk '{print($7)}'`
+COOKIE_AUTH=`grep AuthCookie /var/tmp/PWcookie.txt | awk '{print($7)}'`
 
+# This would work great if using systemd but fails with telegraf running in the foreground
 echo "COOKIE_AUTH=${COOKIE_AUTH}" > /etc/default/telegraf
 echo "COOKIE_REC=${COOKIE_REC}" >> /etc/default/telegraf
+
+sed -i "s/AuthCookie=.*;/AuthCookie=${COOKIE_AUTH};/" /etc/telegraf/telegraf.d/powerwall.conf
+sed -i "s/UserRecord=.*\"/UserRecord=${COOKIE_REC}\"/" /etc/telegraf/telegraf.d/powerwall.conf
 
 # Send SIGHUP to telegraf for configuration reload: https://www.influxdata.com/blog/continuous-deployment-of-telegraf-configurations/
 kill -HUP `pidof telegraf` || true
