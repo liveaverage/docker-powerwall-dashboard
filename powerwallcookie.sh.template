@@ -55,7 +55,7 @@ valid_cookie () {
 
 	# If the cookie is older than one day old, refresh the cookie
 	# Collect both times in seconds-since-the-epoch
-	ONE_DAY_AGO=$(date -d 'now - 1 days' +%s)
+	ONE_DAY_AGO=$(date -d 'now - 4 hours' +%s)
 	FILE_TIME=$(date -r "$COOKIE" +%s)
 
 	if [ "$FILE_TIME" -le "$ONE_DAY_AGO" ]; then
