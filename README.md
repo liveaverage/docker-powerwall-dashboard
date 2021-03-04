@@ -1,6 +1,6 @@
 # Overview
 
-This is based on the work of [@rhodesman](https://github.com/rhodesman) and his [teslaPowerDash](https://github.com/rhodesman/teslaPowerDash) repo, but hopefully enables easier ramp up to start obtaining and trending Powerwall 2 API data.
+This is based on the work of [@rhodesman](https://github.com/rhodesman) and his [teslaPowerDash](https://github.com/rhodesman/teslaPowerDash) repo, but hopefully enables easier ramp up to start obtaining and trending Powerwall 2 API data. 
 
 # Preview
 
@@ -13,15 +13,17 @@ If you're still using docker rather than podman, simply replace all `podman` cal
 - Pull the container image:
 
 ```
-podman pull liveaverage/powerwall-dashboard
+podman pull quay.io/liveaverage/powerwall-dashboard:latest
 ```
 
 
-- Start the container, replacing `POWERWALL_IP` with the assigned IP address of your Powerwall and `LOCAL_INFLUXDB_PATH` with an appropriate destination to store trend data:
+- Start the container, replacing `POWERWALL_IP` with the assigned IP address of your Powerwall, `POWERWALL_PASS` with your Powerwall password (required for Cookie-based auth as of **February 2021**), and `LOCAL_INFLUXDB_PATH` with an appropriate destination to store trend data:
+
+> The default Powerwall password may be the last 5 digits of your Backup Gateway.
 
 ```
 export POWERWALL_IP=192.168.1.92
-export POWERWALL_PASS=002C
+export POWERWALL_PASS=0R2D2
 export LOCAL_INFLUXDB_PATH=/tmp/influxdata
 export LOCAL_GRAFANA_PATH=/tmp/grafana
 export GRAFANA_WEATHER_LOCATION="lat=36.2452052&lon=-80.7292593"
