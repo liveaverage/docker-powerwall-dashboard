@@ -1,3 +1,6 @@
+[![Docker Repository on Quay](https://quay.io/repository/liveaverage/powerwall-dashboard/status "Docker Repository on Quay")](https://quay.io/repository/liveaverage/powerwall-dashboard)
+![Docker Pulls](https://img.shields.io/docker/pulls/liveaverage/powerwall-dashboard)
+
 # Overview
 
 This is based on the work of [@rhodesman](https://github.com/rhodesman) and his [teslaPowerDash](https://github.com/rhodesman/teslaPowerDash) repo, but hopefully enables easier ramp up to start obtaining and trending Powerwall 2 API data. 
