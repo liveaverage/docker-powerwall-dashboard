@@ -39,7 +39,7 @@ RUN mkdir -p /var/lib/grafana/dashboards && chown grafana:grafana /var/lib/grafa
 EXPOSE 3000
 
 ADD run.sh /opt/run.sh
-RUN chmod -v +x /opt/run.sh
+RUN chmod -v +x /opt/run.sh /etc/powerwallcookie.sh
 RUN export $(grep -v "#" /etc/sysconfig/grafana-server | cut -d= -f1)
 
 ENV POWERWALL_LOCATION="lat=36.2452052&lon=-113.7292593"

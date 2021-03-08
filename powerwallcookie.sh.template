@@ -85,6 +85,6 @@ sed -i "s/AuthCookie=.*;/AuthCookie=${COOKIE_AUTH};/" /etc/telegraf/telegraf.d/p
 sed -i "s/UserRecord=.*\"/UserRecord=${COOKIE_REC}\"/" /etc/telegraf/telegraf.d/powerwall.conf
 
 # Send SIGHUP to telegraf for configuration reload: https://www.influxdata.com/blog/continuous-deployment-of-telegraf-configurations/
-kill -HUP `pidof telegraf` || true
+if pgrep telegraf; then pkill -1 telegraf; fi
 
 #Done

@@ -15,11 +15,17 @@ export ONE_DAY_AGO='${ONE_DAY_AGO}'
 export FILE_TIME='${FILE_TIME}'
 
 # Substitute all vars and dump to cron.hourly
+envsubst < /etc/powerwallcookie.sh > /etc/PWcookie.sh
+chmod a+x /etc/PWcookie.sh
 
-envsubst < /etc/powerwallcookie.sh > /etc/cron.hourly/powerwallcookie
-chmod a+x /etc/cron.hourly/powerwallcookie
+# Initial run for auth cookie
+bash -xe /etc/PWcookie.sh
 
-bash -xe /etc/cron.hourly/powerwallcookie
+# Create crontab entry
+echo "0 * * * * /etc/PWcookie.sh" > /var/spool/cron/root
+
+# Start crond in the foreground
+/usr/sbin/crond -m off -n -s -p &
 
 # Start influx
 /usr/bin/influxd -config /etc/influxdb/influxdb.conf &
