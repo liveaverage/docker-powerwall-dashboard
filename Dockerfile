@@ -9,10 +9,7 @@ LABEL Vendor="CentOS7" \
 ARG TARGETARCH
 ENV A_ARCH=$TARGETARCH
 
-RUN echo "Building for $TARGETARCH on OS arch $(arch)"
-
 ENV ARCH=$A_ARCH 
-#ENV IARCH=$(([[ $A_ARCH == "aarch64" ]] && echo "arm64") || ([[ $A_ARCH == "x86_64" ]] && echo "amd64" ))
 ENV VERSION_INFLUXDB=1.8.4 \ 
     VERSION_TELEGRAF=1.18.0 \
     VERSION_GRAFANA=7.5.2-1
@@ -31,9 +28,10 @@ RUN yum -y --setopt=tsflags=nodocs install \
 	cronie \
         gettext
 
-## Install Telegraf + InfluxDB via binary (missing aarch64 pkgs)
-RUN curl https://dl.influxdata.com/influxdb/releases/influxdb-${VERSION_INFLUXDB}_linux_armhf.tar.gz -o influx.tar.gz && \
-    curl https://dl.influxdata.com/telegraf/releases/telegraf-${VERSION_TELEGRAF}_linux_${ARCH}.tar.gz -o telegraf.tar.gz && \
+## Install Telegraf + InfluxDB via binary (missing repo arm pkgs)
+RUN export IARCH=$(([[ $A_ARCH == "aarch64" ]] && echo "armhf") || ([[ $A_ARCH == "x86_64" ]] && echo "amd64" )) && \
+    curl https://dl.influxdata.com/influxdb/releases/influxdb-${VERSION_INFLUXDB}_linux_${IARCH}.tar.gz -o influx.tar.gz && \
+    curl https://dl.influxdata.com/telegraf/releases/telegraf-${VERSION_TELEGRAF}_linux_${IARCH}.tar.gz -o telegraf.tar.gz && \
     tar xvfz influx.tar.gz --strip=2 && \
     tar xvzf telegraf.tar.gz --strip=2
 
