@@ -29,7 +29,8 @@ RUN yum -y --setopt=tsflags=nodocs install \
         gettext
 
 ## Install Telegraf + InfluxDB via binary (missing repo arm pkgs)
-RUN export IARCH=$(([[ $A_ARCH == "aarch64" ]] && echo "armhf") || ([[ $A_ARCH == "x86_64" ]] && echo "amd64" )) && \
+RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhf") || ([[ $A_ARCH == "x86_64" ]] && echo "amd64" )) && \
+    echo "IARCH=${IARCH} ARCH=${ARCH} OS arch=$(arch)" && \
     curl https://dl.influxdata.com/influxdb/releases/influxdb-${VERSION_INFLUXDB}_linux_${IARCH}.tar.gz -o influx.tar.gz && \
     curl https://dl.influxdata.com/telegraf/releases/telegraf-${VERSION_TELEGRAF}_linux_${IARCH}.tar.gz -o telegraf.tar.gz && \
     tar xvfz influx.tar.gz --strip=2 && \
