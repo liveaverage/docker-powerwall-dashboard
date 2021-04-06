@@ -12,7 +12,7 @@ ENV A_ARCH=$TARGETARCH
 ENV ARCH=$A_ARCH 
 ENV VERSION_INFLUXDB=1.8.4 \ 
     VERSION_TELEGRAF=1.18.0 \
-    VERSION_GRAFANA=7.5.2-1
+    VERSION_GRAFANA=7.5.2
 
 ENV POWERWALL_HOST="teslapw"
 ENV POWERWALL_PASS="002D"
@@ -20,21 +20,31 @@ ENV DATABASE="PowerwallData"
 
 #ADD powerwall.repo /etc/yum.repos.d/powerwall.repo
 
-RUN yum -y install epel-release
-RUN yum -y --setopt=tsflags=nodocs install \
-	https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.$(arch).rpm \
-	initscripts \
-	urw-fonts \
-	cronie \
-        gettext
+#RUN yum -y install epel-release
+#RUN yum -y --setopt=tsflags=nodocs install \
+#	initscripts \
+#	urw-fonts \
+#	cronie \
+#        gettext
 
-## Install Telegraf + InfluxDB via binary (missing repo arm pkgs)
-RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhf") || ([[ $A_ARCH == "x86_64" ]] && echo "amd64" )) && \
-    echo "IARCH=${IARCH} ARCH=${ARCH} OS arch=$(arch)" && \
+RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhf") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
+    echo "A_ARCH=${A_ARCH} IARCH=${IARCH} ARCH=${ARCH} OS arch=$(arch)" && \
+    curl https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.linux-${IARCH}.tar.gz -o grafana.tar.gz && \
+    tar xvzf grafana.tar.gz && \
+    cp grafana-*/bin/* /usr/sbin/ 
+    
+# yum -y --setopt=tsflags=nodocs install https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.${IARCH}.rpm && \
+
+## Install Grafana + Telegraf + InfluxDB via binary (missing repo arm pkgs)
+RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhf") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
+    echo "A_ARCH=${A_ARCH} IARCH=${IARCH} ARCH=${ARCH} OS arch=$(arch)" && \
     curl https://dl.influxdata.com/influxdb/releases/influxdb-${VERSION_INFLUXDB}_linux_${IARCH}.tar.gz -o influx.tar.gz && \
     curl https://dl.influxdata.com/telegraf/releases/telegraf-${VERSION_TELEGRAF}_linux_${IARCH}.tar.gz -o telegraf.tar.gz && \
     tar xvfz influx.tar.gz --strip=2 && \
     tar xvzf telegraf.tar.gz --strip=2
+
+## Cleanup tar files
+RUN rm -rf influx* telegraf* && useradd grafana
 
 ## Defaults for InfluxDB
 ENV INFLUXDB_HTTP_ENABLED=true \
@@ -46,7 +56,11 @@ ENV INFLUXDB_HTTP_ENABLED=true \
 ## which should be mapped to a docker/podman volume for persistence
 
 RUN mkdir -p /etc/telegraf && \ 
-    mkdir -p /var/lib/grafana/dashboards && \
+    mkdir -p /etc/grafana/provisioning/dashboards \
+	/etc/grafana/provisioning/datasources \
+	/var/lib/grafana \
+	/var/log/grafana \
+	/var/lib/grafana/dashboards && \
     chown grafana:grafana /var/lib/grafana/dashboards
 
 ADD powerwall.conf /etc/telegraf/telegraf.d/powerwall.conf
