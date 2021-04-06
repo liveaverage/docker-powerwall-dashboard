@@ -27,11 +27,11 @@ ENV DATABASE="PowerwallData"
 #	cronie \
 #        gettext
 
-RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhf") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
+RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armv7") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
     echo "A_ARCH=${A_ARCH} IARCH=${IARCH} ARCH=${ARCH} OS arch=$(arch)" && \
     curl https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.linux-${IARCH}.tar.gz -o grafana.tar.gz && \
     tar xvzf grafana.tar.gz && \
-    cp grafana-*/bin/* /usr/sbin/ 
+    cp grafana-${VERSION_GRAFANA}/bin/* /usr/sbin/ 
     
 # yum -y --setopt=tsflags=nodocs install https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.${IARCH}.rpm && \
 
