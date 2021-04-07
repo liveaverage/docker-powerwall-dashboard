@@ -42,7 +42,7 @@ RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhf") || ([[ $A_ARCH == 
     tar xvzf telegraf.tar.gz --strip=2
 
 ## Cleanup tar files
-RUN rm -rf influx* telegraf* && useradd grafana
+RUN rm -rf influx* telegraf* 
 
 ## Defaults for InfluxDB
 ENV INFLUXDB_HTTP_ENABLED=true \
