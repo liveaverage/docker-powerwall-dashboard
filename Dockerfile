@@ -18,14 +18,11 @@ ENV POWERWALL_HOST="teslapw"
 ENV POWERWALL_PASS="002D"
 ENV DATABASE="PowerwallData"
 
-#ADD powerwall.repo /etc/yum.repos.d/powerwall.repo
-
 RUN yum -y install epel-release
 RUN yum -y --setopt=tsflags=nodocs install \
 	initscripts \
 	urw-fonts \
 	cronie \
-        glibc.i386 \
         gettext
 
 RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhfp") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
