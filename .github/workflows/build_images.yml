@@ -16,7 +16,8 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/${GITHUB_REPOSITORY#*/}
+          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/powerwall-dashboard
+          ### ${GITHUB_REPOSITORY#*/}
           VERSION=multiarch
           SHORTREF=${GITHUB_SHA::8}
 
