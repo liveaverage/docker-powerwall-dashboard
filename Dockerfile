@@ -12,7 +12,7 @@ ENV A_ARCH=$TARGETARCH
 ENV ARCH=$A_ARCH 
 ENV VERSION_INFLUXDB=1.8.4 \ 
     VERSION_TELEGRAF=1.18.0 \
-    VERSION_GRAFANA=7.5.2
+    VERSION_GRAFANA=7.5.2-1
 
 ENV POWERWALL_HOST="teslapw"
 ENV POWERWALL_PASS="002D"
@@ -20,19 +20,17 @@ ENV DATABASE="PowerwallData"
 
 #ADD powerwall.repo /etc/yum.repos.d/powerwall.repo
 
-#RUN yum -y install epel-release
-#RUN yum -y --setopt=tsflags=nodocs install \
-#	initscripts \
-#	urw-fonts \
-#	cronie \
-#        gettext
+RUN yum -y install epel-release
+RUN yum -y --setopt=tsflags=nodocs install \
+	initscripts \
+	urw-fonts \
+	cronie \
+        glibc.i386 \
+        gettext
 
-RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armv7") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
+RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhfp") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
     echo "A_ARCH=${A_ARCH} IARCH=${IARCH} ARCH=${ARCH} OS arch=$(arch)" && \
-    curl https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.linux-${IARCH}.tar.gz -o grafana.tar.gz && \
-    tar xvzf grafana.tar.gz && \
-    cp grafana-${VERSION_GRAFANA}/bin/* /usr/sbin/ 
-    
+    yum -y --setopt=tsflags=nodocs install https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.$(arch).rpm 
 # yum -y --setopt=tsflags=nodocs install https://dl.grafana.com/oss/release/grafana-${VERSION_GRAFANA}.${IARCH}.rpm && \
 
 ## Install Grafana + Telegraf + InfluxDB via binary (missing repo arm pkgs)
