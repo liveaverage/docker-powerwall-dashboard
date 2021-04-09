@@ -1,4 +1,4 @@
-[![Docker Repository on Quay](https://quay.io/repository/liveaverage/powerwall-dashboard/status "Docker Repository on Quay")](https://quay.io/repository/liveaverage/powerwall-dashboard)
+![GitHub Workflow](https://github.com/liveaverage/docker-powerwall-dashboard/actions/workflows/build_images.yml/badge.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/liveaverage/powerwall-dashboard)
 
 # Overview

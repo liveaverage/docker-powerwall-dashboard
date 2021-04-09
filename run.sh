@@ -28,12 +28,13 @@ echo "0 * * * * /etc/PWcookie.sh" > /var/spool/cron/root
 /usr/sbin/crond -m off -n -s -p &
 
 # Start influx
-/usr/bin/influxd -config /etc/influxdb/influxdb.conf &
+/usr/bin/influxd &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start influxd: $status"
   exit $status
 fi
+
 
 # Start telegraf:
 /usr/bin/telegraf --config /etc/telegraf/telegraf.conf --config-directory /etc/telegraf/telegraf.d &
