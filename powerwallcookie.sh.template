@@ -29,12 +29,12 @@
 # Create a valid Cookie
 create_cookie () {
 	# Delete the old cookie if it exists
-	if [ -f $COOKIE ]; then 
-		rm -f $COOKIE
+	if [ -f $COOKIE ] || [ -f $TOKEN ]; then 
+		rm -f $COOKIE $TOKEN
 	fi
 	
 	# Login and Create new cookie
-	curl -s -k -i -c $COOKIE -X POST -H "Content-Type: application/json" -d "{\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\", \"email\":\"$EMAIL\",\"force_sm_off\":false}" "https://$POWERWALLIP/api/login/Basic"
+	curl -s -k -c $COOKIE -X POST -H "Content-Type: application/json" -d "{\"username\":\"customer\",\"password\":\"$PASSWORD\", \"email\":\"$EMAIL\"}" "https://${POWERWALL_HOST}/api/login/Basic"  | jq -r '.token' > $TOKEN
 
 	# If Login fails, then throw error and exit
 	if [ $? -eq 200 ]; then
@@ -48,7 +48,7 @@ create_cookie () {
 valid_cookie () {
 
 	# if cookie doesnt exist, then login and create the cookie
-	if [ ! -f $COOKIE ]; then
+	if [ ! -f $COOKIE ] || [ ! -f $TOKEN ]; then
   		# Cookie not present. Creating cookie.
 		create_cookie
 	fi
@@ -81,8 +81,9 @@ COOKIE_AUTH=`grep AuthCookie /var/tmp/PWcookie.txt | awk '{print($7)}'`
 echo "COOKIE_AUTH=${COOKIE_AUTH}" > /etc/default/telegraf
 echo "COOKIE_REC=${COOKIE_REC}" >> /etc/default/telegraf
 
-sed -i "s/AuthCookie=.*;/AuthCookie=${COOKIE_AUTH};/" /etc/telegraf/telegraf.d/powerwall.conf
-sed -i "s/UserRecord=.*\"/UserRecord=${COOKIE_REC}\"/" /etc/telegraf/telegraf.d/powerwall.conf
+sed -i "s/AuthCookie=[^;]*/AuthCookie=${COOKIE_AUTH}/g" /etc/telegraf/telegraf.d/powerwall.conf
+sed -i "s/UserRecord=[^\"]*/UserRecord=${COOKIE_REC}/g" /etc/telegraf/telegraf.d/powerwall.conf
+
 
 # Send SIGHUP to telegraf for configuration reload: https://www.influxdata.com/blog/continuous-deployment-of-telegraf-configurations/
 if pgrep telegraf; then pkill -1 telegraf; fi
