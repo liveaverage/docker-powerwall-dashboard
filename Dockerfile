@@ -76,4 +76,8 @@ RUN mv /tmp/powerwall.conf /etc/telegraf/telegraf.d/powerwall.conf \
 
 EXPOSE 3000
 
+<<<<<<< HEAD
 CMD ["/opt/run.sh"]
+=======
+CMD ["/opt/run.sh"]
+>>>>>>> bfb5bedfddb06faf0a5828f7a40c0460b46ce906
