@@ -24,6 +24,8 @@ podman pull quay.io/liveaverage/powerwall-dashboard:latest
 
 > The default Powerwall password may be the last 5 digits of your Backup Gateway.
 
+> Note you *must* use a hostname map for `powerwall` due to changes in the API introduced in **June 2021**
+
 ```
 export POWERWALL_IP=192.168.1.92
 export POWERWALL_PASS=0R2D2
@@ -32,7 +34,7 @@ export LOCAL_GRAFANA_PATH=/tmp/grafana
 export GRAFANA_WEATHER_LOCATION="lat=36.2452052&lon=-80.7292593"
 export GRAFANA_DASHBOARD_URL="https://raw.githubusercontent.com/liveaverage/docker-powerwall-dashboard/master/graf_dash.json"
 
-podman run --add-host teslapw:${POWERWALL_IP} -p 3000:3000 \
+podman run --add-host powerwall:${POWERWALL_IP} -p 3000:3000 \
 	-e "POWERWALL_PASS=${POWERWALL_PASS}" \
         -e "GRAFANA_DASHBOARD_URL=${GRAFANA_DASHBOARD_URL}" \
         -e "POWERWALL_LOCATION=${GRAFANA_WEATHER_LOCATION}" \
