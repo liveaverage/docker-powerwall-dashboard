@@ -7,6 +7,7 @@ export PASSWORD="${POWERWALL_PASS}"            # Login to the Powerwall UI and S
 export USERNAME="customer"
 export EMAIL="Lt.Dan@bubbagump.com"            # Set this to whatever you want, it's not actually used in the login process; I suspect Tesla will collect this eventually
 export COOKIE="/var/tmp/PWcookie.txt"          # Feel free to change this location as you see fit.
+export TOKEN="/var/tmp/PWtoken.txt"
 
 # Workaround to ensure a couple of vars are left untouched
 export COOKIE_AUTH='${COOKIE_AUTH}'
@@ -20,6 +21,8 @@ chmod a+x /etc/PWcookie.sh
 
 # Initial run for auth cookie
 bash -xe /etc/PWcookie.sh
+
+sleep 3
 
 # Create crontab entry
 echo "0 * * * * /etc/PWcookie.sh" > /var/spool/cron/root
