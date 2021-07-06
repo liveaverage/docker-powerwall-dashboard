@@ -25,7 +25,8 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
           fi
-          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${SHORTREF},${DOCKER_IMAGE}:latest"
+          TAGS_DOCKER="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:${SHORTREF},${DOCKER_IMAGE}:latest"
+          TAGS_QUAYIO="${{ secrets.REGISTRY_URI }}/${DOCKER_IMAGE}:${VERSION},${{ secrets.REGISTRY_URI }}/${DOCKER_IMAGE}:${SHORTREF},${{ secrets.REGISTRY_URI }}/${DOCKER_IMAGE}:latest"
 
           # If the VERSION looks like a version number, assume that
           # this is the most recent version of the image and also
@@ -36,7 +37,8 @@ jobs:
           #fi
 
           # Set output parameters.
-          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=tags_docker::${TAGS_DOCKER}
+          echo ::set-output name=tags_quayio::${TAGS_QUAYIO}
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
 
       - name: Set up QEMU
@@ -73,5 +75,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ steps.prep.outputs.tags }}
-            ${{ secrets.REGISTRY_URI }}/${{ steps.prep.outputs.tags }}
+            ${{ steps.prep.outputs.tags_docker }}
+            ${{ steps.prep.outputs.tags_quayio }}
