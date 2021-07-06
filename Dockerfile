@@ -10,10 +10,6 @@ ARG TARGETARCH
 ENV A_ARCH=$TARGETARCH \
     ARCH=$A_ARCH
 
-#ENV VERSION_INFLUXDB=1.8.4 \
-#    VERSION_TELEGRAF=1.18.0 \
-#    VERSION_GRAFANA=7.5.2-1
-
 ENV VERSION_INFLUXDB=1.8.6 \
     VERSION_TELEGRAF=1.19.0 \
     VERSION_GRAFANA=7.5.2-1
@@ -30,7 +26,7 @@ RUN yum -y install epel-release \
             urw-fonts \
             cronie \
             jq \
-        gettext
+            gettext
 
 ## Install Grafana
 RUN export IARCH=$(([[ $A_ARCH == *"arm"* ]] && echo "armhfp") || ([[ $A_ARCH == *"amd64"* ]] && echo "amd64" )) && \
