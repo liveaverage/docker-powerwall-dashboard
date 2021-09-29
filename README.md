@@ -1,6 +1,9 @@
 ![GitHub Workflow](https://github.com/liveaverage/docker-powerwall-dashboard/actions/workflows/build_images.yml/badge.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/liveaverage/powerwall-dashboard)
 
+> ⚠️ **DEPRECATION NOTICE**
+> This monolith image is being deprecated in favor of the [podman-compose or docker-compose variant](https://github.com/liveaverage/dc-powerwall-dashboard) which works the same, utilizes vendor-maintained images [for x86 and aarch64], and decouples the services for easier troubleshooting.
+
 # Overview
 
 This is based on the work of [@rhodesman](https://github.com/rhodesman) and his [teslaPowerDash](https://github.com/rhodesman/teslaPowerDash) repo, but hopefully enables easier ramp up to start obtaining and trending Powerwall 2 API data. 
